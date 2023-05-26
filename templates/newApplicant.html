@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+    form {
+        margin: 30px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .flex{
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+
+    .flex div {
+        min-width: 45%;
+    }
+
+    .custom-select {
+        min-width:80%;
+        max-width:80%;
+    }
+
+</style>
+
+
+<form method="POST" action="addApplicant">
+    {% csrf_token %}
+    <div class="flex">
+        <div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Applicant Name <span class="red">*</span></label>
+                <input required type="text" class="form-control" name="name">
+            </div>
+            <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone Number <span class="red">*</span></label>
+                <input required type="text" class="form-control" name="phoneNumber">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address <span class="red">*</span></label>
+                <input required type="email" class="form-control" name="email">
+            </div>
+        </div>
+
+        <div>
+            <h2 class="text-center">Roles</h2>
+            <div class="flex">
+                <div class="mb-3">
+                    <label for="role1" class="form-label">Role 1</label><br>
+                    <select class="custom-select" name="role1">
+                        <option selected>---</option>
+                        {% for role in roles %}
+                        <option value="{{ role.id }}">{{ role }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="status1" class="form-label">Status 1</label><br>
+                    <select class="custom-select" name="status1">
+                        <option selected>---</option>
+                        {% for stat in status %}
+                            <option value="{{ stat }}">{{ stat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+                
+            <div class="flex">
+                <div class="mb-3">
+                    <label for="role2" class="form-label">Role 2</label><br>
+                    <select class="custom-select" name="role2">
+                        <option selected>---</option>
+                        {% for role in roles %}
+                        <option value="{{ role.id }}">{{ role }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="status2" class="form-label">Status 2</label><br>
+                    <select class="custom-select" name="status2">
+                        <option selected>---</option>
+                        {% for stat in status %}
+                            <option value="{{ stat }}">{{ stat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex">
+                <div class="mb-3">
+                    <label for="role3" class="form-label">Role 3</label><br>
+                    <select class="custom-select" name="role3">
+                        <option selected>---</option>
+                        {% for role in roles %}
+                        <option value="{{ role.id }}">{{ role }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="status3" class="form-label">Status 3</label><br>
+                    <select class="custom-select" name="status3">
+                        <option selected>---</option>
+                        {% for stat in status %}
+                            <option value="{{ stat }}">{{ stat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <br>
+        <button type="submit" class="btn btn-primary">Add Applicant</button>
+        <a href="../" class="btn btn-secondary">Go Back</a>
+    </div>
+</form>
+
+{% endblock %}

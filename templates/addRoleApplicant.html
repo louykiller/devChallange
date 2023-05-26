@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    form {
+        margin: 30px;
+    }
+
+    .custom-select {
+        min-width:40%;
+    }
+
+    .red {
+        color: red;
+    }
+
+</style>
+
+
+<form class="text-center" method="POST" action="../addRoleApplicant/{{ role.id }}">
+    {% csrf_token %}
+    <h2 class="text-center">New Applicant for the Role {{ role.name}}</h2>
+    <div class="flex">
+        <div class="mb-3">
+            <label for="applicant" class="form-label">Applicant <span class="red">*</span></label><br>
+            <select required class="custom-select" name="applicant">
+                <option selected>---</option>
+                {% for applicant in applicantsLeft %}
+                <option value="{{ applicant.id }}">{{ applicant.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Status <span class="red">*</span></label><br>
+            <select required class="custom-select" name="status">
+                <option selected>---</option>
+                {% for stat in status %}
+                    <option value="{{ stat }}">{{ stat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <br>
+        <button type="submit" class="btn btn-primary">Add Applicant</button>
+        <a href="../role/{{ role.id }}" class="btn btn-secondary">Go Back</a>
+    </div>
+</form>
+
+
+{% endblock %}

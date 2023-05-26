@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<style>
+    
+    form {
+        margin: 20%;
+        margin-top: 20px;
+    }
+
+</style>
+
+<form method="POST" action="addRole">
+    {% csrf_token %}
+        <div class="text-center">
+            <div class="mb-3">
+                <label for="name" class="form-label">Role Name <span class="red">*</span></label>
+                <input required type="text" class="form-control" name="name" id="name">
+            </div>
+        </div>
+
+    <div class="text-center">
+        <br>
+        <button type="submit" class="btn btn-primary">Add Role</button>
+        <a href="../" class="btn btn-secondary">Go Back</a>
+    </div>
+</form>
+
+
+{% endblock %}
