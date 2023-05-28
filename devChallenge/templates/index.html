@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <style>
+        #container{
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        #container div{
+            margin: 30px;
+            margin-top: 20px;
+        }
+
+        .flex{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .flex h2 {
+            padding: 0px; 
+            margin: 0px;
+            margin-left:-25px;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        #roles td{
+            width: 100%;
+        }
+
+    </style>
+
+
+    <div id="container">
+        <!-- List of applicants -->
+        <div id="applicants" style="min-width: 60%;">
+            <div class="flex">
+                <h2>Applicants</h2> 
+                <a href="./addApplicant">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                </a>
+            </div>
+            {% if not applicantsData %}
+                <h3>No Applicants yet!</h3>
+            {% else %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Roles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for applicant, applicantRole in applicantsData %}
+                        <tr class='clickable-row' data-href="../applicant/{{applicant.id}}">
+                            <td><h6>{{ applicant.name }}</h6></td>
+                            <td>{{ applicant.phoneNumber }}</td>
+                            <td>{{ applicant.email }}</td>
+                            <td>
+                                {% for role in applicantRole %}
+                                    <h6>{{ role.role.name }}
+                                        {% if role.status == 'Approved' %}
+                                        <span class="badge rounded-pill text-bg-success">{{ role.status }}</span>
+                                        {% elif role.status == 'Rejected' %}
+                                        <span class="badge rounded-pill text-bg-danger">{{ role.status }}</span>
+                                        {% else %}
+                                        <span class="badge rounded-pill text-bg-warning">{{ role.status }}</span>
+                                        {% endif %}
+                                    </h6>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+        <!-- List of roles -->
+        <div id="roles" style="min-width: 30%;">
+            <div class="flex">
+                <h2>Roles</h2> 
+                <a href="../addRole">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </a>
+            </div>
+            {% if not rolesData %}
+                <h3>No Roles yet!</h3>
+            {% else %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for role, applicantRole in rolesData %}
+                            <div class="accordion-item">
+                                <tr>
+                                    <td>
+                                        <h6>
+                                            <a href="../role/{{ role.id }}">{{ role.name }}</a>
+                                            <span style="float:right;" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ role.id }}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ role.id }}" class="clickable">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                                                <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                            </svg>
+                                            </span>
+                                        </h6>    
+                                    </td>
+                                </tr>                                  
+                                <tr class="accordion-tr">
+                                    <td>
+                                        <div id="panelsStayOpen-collapse{{ role.id }}" class="accordion-collapse collapse">
+                                            {% if not applicantRole %}
+                                                <p>No Applicants for this role yet!</p>
+                                            {% endif %}
+                                            {% for r in applicantRole %}
+                                                <p><a href="../applicant/{{r.applicant.id}}">{{ r.applicant.name }} </a>
+                                                    {% if r.status == 'Approved' %}
+                                                        <span class="badge rounded-pill text-bg-success">{{ r.status }}</span>
+                                                    {% elif r.status == 'Rejected' %}
+                                                        <span class="badge rounded-pill text-bg-danger">{{ r.status }}</span>
+                                                    {% else %}
+                                                        <span class="badge rounded-pill text-bg-warning">{{ r.status }}</span>
+                                                    {% endif %}
+                                                </p>
+                                            {% endfor %}                                  
+                                        </div>
+                                    <td>
+                                </tr>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+
+{% endblock %}

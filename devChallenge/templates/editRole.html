@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    form {
+        margin: 30px;
+    }
+
+    .custom-select {
+        min-width:40%;
+    }
+
+    .red {
+        color: red;
+    }
+
+</style>
+
+<form class="text-center" method="POST" action="../../editRole/{{ applicantRole.applicant.id }}/{{ applicantRole.role.id }}">
+    {% csrf_token %}
+    <h2 class="text-center">Edit status of {{ applicantRole.applicant.name}} for {{ applicantRole.role.name }}</h2>
+    <div class="flex">
+        <div class="mb-3">
+            <label for="status" class="form-label">Status <span class="red">*</span></label><br>
+            <select required class="custom-select" name="status">
+                <option selected>{{ applicantRole.status }}</option>
+                {% for stat in status %}
+                    <option value="{{ stat }}">{{ stat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <br>
+        <button type="submit" class="btn btn-primary">Update Status</button>
+        <a href="../../role/{{ applicantRole.role.id }}" class="btn btn-secondary">Go Back</a>
+    </div>
+</form>
+
+
+{% endblock %}
